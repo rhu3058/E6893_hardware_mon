@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<style>
+table, th, td {
+  border:1px solid black;
+}
+</style>
+<head>
+<!-- Load d3.js you can use ither version if you want -->
+<script src="https://d3js.org/d3.v5.js"></script>
+
+<!-- Create a div where the graph will take place -->
+<div id="dataviz"></div>
+
+<script>
+const process = data =>  {
+  console.log(data);
+  var tag = document.createElement("p");
+  var text = document.createTextNode("last event");
+  tag.appendChild(text);
+  document.body.appendChild(tag);
+  slice = data.slice(0,5)
+  var matrix = slice;
+  var table = d3.select('body').append('table')
+            .style("border-collapse", "collapse")
+            .style("border", "2px black solid");
+  table.append("thead").append("tr")
+    .selectAll("th")
+    .data(["Error Type","Time - Estimate downtime"])
+    .enter()
+    .append("th")
+    .text(function(d) { return d; })
+    .text(function(d) { return d; })
+    .style("padding", "5px")
+    .style("background-color", "lightgray")
+    .style("font-weight", "bold")
+    .style("text-transform", "uppercase");
+  table.append("tbody")
+    .selectAll("tr")
+    .data(matrix)
+    .enter()
+    .append("tr")
+    .selectAll("td")
+    .data(function(d,i) {
+        console.log(Object.values(d));
+        return Object.values(d);;
+    })
+    .enter()
+    .append("td")
+    .text(function(d) {
+        return d;
+    })
+
+};
+
+window.addEventListener("load",function() {
+  let mycsv = 'output.csv';
+  d3.csv(mycsv)
+   .then(process)
+   .catch(function(error){
+     console.log(error)
+  })
+}) 
+
+
+</script>
+</head>
+<body>
+
+</body>
+</html>
